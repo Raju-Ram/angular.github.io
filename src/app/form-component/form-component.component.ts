@@ -16,9 +16,13 @@ class ColumnsObj {
     FirstName:string;
     LastName:string;
     email:string;
+    city:string;
+    state:string;
+    mobile:string;
     password:string;
     confirmPassword:string;
     acceptTerms:string;
+   
 }
 
 
@@ -42,6 +46,9 @@ export class FormComponentComponent implements OnInit {
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
+            city: ['', Validators.required],
+            state:['', Validators.required],
+            mobile: ['', Validators.required],
             password: ['', [Validators.required, Validators.minLength(6)]],
             confirmPassword: ['', Validators.required],
             acceptTerms: [false, Validators.requiredTrue]
@@ -50,6 +57,7 @@ export class FormComponentComponent implements OnInit {
 
     // convenience getter for easy access to form fields
     get f() { return this.registerForm.controls; }
+
 
     onSubmit() {
         this.submitted = true;
@@ -68,6 +76,9 @@ export class FormComponentComponent implements OnInit {
               formData.append("firstName", fields["firstName"]);
               formData.append("lastName", fields["lastName"]);
               formData.append("email", fields['email']);
+              formData.append("city", fields['city']);
+              formData.append("state", fields['state']);
+              formData.append("mobile", fields['mobile']);
               formData.append("password", fields['password']);
               formData.append("confirmPassword", fields['confirmPassword']);
               formData.append("acceptTerms", fields['acceptTerms']);
@@ -82,10 +93,10 @@ export class FormComponentComponent implements OnInit {
         alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
     }
 
-    onReset() {
-        this.submitted = false;
-        this.registerForm.reset();
-    }
+    // onReset() {
+    //     this.submitted = false;
+    //     this.registerForm.reset();
+    // }
 
     get(){
         const that = this;
@@ -106,9 +117,10 @@ export class FormComponentComponent implements OnInit {
     
         formData.append("Id",id);
       this.api.HttpPostType('index.php/jpi/delete', formData).then((res:any)=>{
-    
+     
+     
       })
+
       }
-    
-    
-}
+
+    }

@@ -1,5 +1,5 @@
 <div class="card m-3">
-    <h5 class="card-header text-danger" >Angular 8 Reactive Form Validation</h5>
+    <h5 class="card-header text-danger" >Reactive Form Validation</h5>
     <div class="card-body">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="form-row">
@@ -31,7 +31,8 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+              <div class="form-row">
+            <div class="form-group col-6">
                 <label>Email</label>
                 <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
                 <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
@@ -39,8 +40,51 @@
                     <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
                 </div>
             </div>
+
+
+            <div class="form-group col-6">
+                <label>CITY</label>
+                <select formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.city.errors }">
+                    <option value=""></option>
+                    <option value="JAIPUR">JAIPUR</option>
+                    <option value="UDAIPUR">UDAIPUR</option>
+                    <option value="AJMER">AJMER</option>
+                    <option value="KOTA">KOTA</option>
+                    <option value="KOTA">SIROHI</option>
+                    <option value="KOTA">NAGOUR</option>
+                    <option value="KOTA">DUNGARPUR</option>
+                </select>
+                <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                    <div *ngIf="f.city.errors.required">city is required</div>
+                </div>
+            </div>
+            <div class="form-group col-6">
+                <label>STATE</label>
+                <select formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.state.errors }">
+                    <option value=""></option>
+                    <option value="RAJASTHAN">RAJASTHAN</option>
+                    <option value="MUMBAI">MUMBAI</option>
+                    <option value="UTRAKHND">UTRAKHND</option>
+                    <option value="TAMILNADU">TAMILNADU</option>
+                    <option value="MADHYPARDESH">MADHYPARDESH</option>
+                    <option value="ANDHRAPARDESH">ANDHRAPARDESH</option>
+                    <option value="SIKKAM">SIKKAM</option>
+                </select>
+                <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                    <div *ngIf="f.state.errors.required">state is required</div>
+                </div>
+            </div>
+           
+            <div class="form-group col-6">
+                <label>MOBILE</label>
+                <input type="number" formControlName="mobile" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" />
+                <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+                    <div *ngIf="f.mobile.errors.required">mobile is required</div>
+                </div>
+            </div>
+            </div>
             <div class="form-row">
-                <div class="form-group col">
+                <div class="form-group col-5">
                     <label>Password</label>
                     <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
                     <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
@@ -48,7 +92,7 @@
                         <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
                     </div>
                 </div>
-                <div class="form-group col">
+                <div class="form-group col-5">
                     <label>Confirm Password</label>
                     <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
                     <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
@@ -64,7 +108,7 @@
             </div>
             <div class="text-center">
                 <button class="btn btn-primary mr-1">Register</button>
-                <button class="btn btn-secondary" type="reset" (click)="onReset()">Cancel</button>
+                <!-- <button class="btn btn-secondary" type="reset" (click)="onReset()">Cancel</button> -->
             </div>
             
         </form>
@@ -90,8 +134,12 @@
     <th >First Name</th>
     <th>Last Name</th>
     <th>Email</th>
-    <th>Password</th>
+    <th>CITY</th>
+    <th>STATE</th>
+    <th>MOBILE</th>
+    <th>PASSWORD</th>
     <th>Confirm Password</th>
+    <th>ACTION</th>
     <th>ACTION</th>
     
   </tr>
@@ -102,12 +150,16 @@
     <td>{{row.FirstName}}</td>
     <td>{{row.LastName}}</td>
     <td>{{row.Email}}</td>
+    <td>{{row.City}}</td>
+    <td>{{row.State}}</td>
+    <td>{{row.Mobile}}</td>
     <td>{{row.Password}}</td>
     <td>{{row.ConfirmPassword}}</td>
     <td>  
         <button (click)="deleteQuantity(row.Id)" class="btn btn-danger">delete</button>  
     </td> 
-  
+    
+    
    
   </tr>
 </tbody>
