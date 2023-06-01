@@ -38,5 +38,10 @@ export class ApiService {
     return this.http.get(this.apiUrl + "/" + apiName);
   }
 
+  updateUser(id: number, updatedUser: any) {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.put(url, updatedUser);
+  }
+
 
 }

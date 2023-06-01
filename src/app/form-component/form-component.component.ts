@@ -12,16 +12,16 @@ import { ApiService } from '../service/api.service';
 
 class ColumnsObj {
     SrNo:string;
-    title:string;
+    Title:string;
     FirstName:string;
     LastName:string;
-    email:string;
-    city:string;
-    state:string;
-    mobile:string;
-    password:string;
-    confirmPassword:string;
-    acceptTerms:string;
+    Email:string;
+    City:string;
+    State:string;
+    Mobile:string;
+    Password:string;
+    ConfirmPassword:string;
+    AcceptTerms:string;
    
 }
 
@@ -32,27 +32,33 @@ class ColumnsObj {
     styleUrls: ['./form-component.component.css']
   })
 export class FormComponentComponent implements OnInit {
-    registerForm: FormGroup;
+    registerForm: any;
     submitted = false;
+    productForm: FormGroup;
     dataAr: ColumnsObj[];
+    editMode: boolean = false;
+    row: any[];
+    Id:any;
 
-    constructor(private formBuilder: FormBuilder, private api:ApiService,private http: HttpClient) { }
+    constructor(private formBuilder: FormBuilder, private api:ApiService,private http: HttpClient) {
+      this.registerForm = this.formBuilder.group({
+        title: ['', Validators.required],
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        city: ['', Validators.required],
+        state:['', Validators.required],
+        mobile: ['', Validators.required],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required],
+        acceptTerms: [false, Validators.requiredTrue]
+    });
+     }
 
     ngOnInit() {
 
         this.get();
-        this.registerForm = this.formBuilder.group({
-            title: ['', Validators.required],
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]],
-            city: ['', Validators.required],
-            state:['', Validators.required],
-            mobile: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]],
-            confirmPassword: ['', Validators.required],
-            acceptTerms: [false, Validators.requiredTrue]
-        })
+  
     }
 
     // convenience getter for easy access to form fields
@@ -63,15 +69,15 @@ export class FormComponentComponent implements OnInit {
         this.submitted = true;
 
         // stop here if form is invalid
-        if (this.registerForm.invalid) {
-            return;
-        }
-        else{
+        if (this.registerForm.valid) {
+            // return;
 
-
-            var fields = this.registerForm.value;
+            if(this.editMode == true){
+              var fields = this.registerForm.value;
               const formData = new FormData();
-        
+
+              formData.append("Id", this.Id);
+
               formData.append("title",fields['title']);
               formData.append("firstName", fields["firstName"]);
               formData.append("lastName", fields["lastName"]);
@@ -81,22 +87,48 @@ export class FormComponentComponent implements OnInit {
               formData.append("mobile", fields['mobile']);
               formData.append("password", fields['password']);
               formData.append("confirmPassword", fields['confirmPassword']);
-              formData.append("acceptTerms", fields['acceptTerms']);
-               console.log(this.registerForm.value);
+              formData.append("acceptTerms", fields['acceptTerms']); 
+
+              this.api.HttpPostType('index.php/jpi/update', formData).then((res:any)=>{
       
-            this.api.HttpPostType('index.php/jpi/insertuser', formData).then((res:any)=>{
+              })
+            }
+            else{
+
+
+              var fields = this.registerForm.value;
+                const formData = new FormData();
+          
+                formData.append("title",fields['title']);
+                formData.append("firstName", fields["firstName"]);
+                formData.append("lastName", fields["lastName"]);
+                formData.append("email", fields['email']);
+                formData.append("city", fields['city']);
+                formData.append("state", fields['state']);
+                formData.append("mobile", fields['mobile']);
+                formData.append("password", fields['password']);
+                formData.append("confirmPassword", fields['confirmPassword']);
+                formData.append("acceptTerms", fields['acceptTerms']);
+                 console.log(this.registerForm.value);
+        
+              this.api.HttpPostType('index.php/jpi/insertuser', formData).then((res:any)=>{
+        
+              })
+            }
+        }
+        else{
+
+        }
       
-            })
-          }
 
         // display form values on success popup form
-        alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
+        // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
     }
 
-    // onReset() {
-    //     this.submitted = false;
-    //     this.registerForm.reset();
-    // }
+    onReset() {
+        this.submitted = false;
+        this.registerForm.reset();
+    }
 
     get(){
         const that = this;
@@ -121,6 +153,30 @@ export class FormComponentComponent implements OnInit {
      
       })
 
+      }
+      updateUser(Id:any, index:any) {
+        this.editMode = true;
+        this.Id = Id;
+    
+        // console.log(this.dataAr[index]);
+        // console.log(this.dataAr[index].Name);
+        // this.updaemode = mode
+    
+        this.registerForm.patchValue({
+    
+          title: this.dataAr[index].Title,
+          firstName: this.dataAr[index].FirstName,
+          lastName: this.dataAr[index].LastName,
+          email: this.dataAr[index].Email,
+          city: this.dataAr[index].City,
+          state: this.dataAr[index].State,
+          mobile: this.dataAr[index].Mobile,
+          password: this.dataAr[index].Password,
+          confirmPassword: this.dataAr[index].ConfirmPassword,
+          acceptTerms: this.dataAr[index].AcceptTerms,
+
+        });
+    
       }
 
     }
